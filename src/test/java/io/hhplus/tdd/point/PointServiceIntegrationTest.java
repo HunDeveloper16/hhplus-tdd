@@ -21,7 +21,7 @@ public class PointServiceIntegrationTest {
 
     @Test
     @DisplayName("포인트 충전 및 사용 후 포인트 내역이 정상적으로 조회된다.")
-    void userPoint_charge_history_none_success() {
+    void getHistories_afterChargeAndUse_success() {
         // given
         long id = 1, firstAmount = 1000, secondAmount = 2000, useAmount = 2500;
         pointService.chargeUserPoint(id, firstAmount);

@@ -28,7 +28,7 @@ public class PointServiceTest {
 
     @Test
     @DisplayName("존재하지 않는 유저 포인트 조회시 기본 객체가 반환된다.")
-    void userPoint_get_fail() {
+    void getUserPoint_whenUserDoesNotExist_returnsDefaultObject() {
         // given: Stub 객체 생성 및 상태 설정
         long id = 1;
 
@@ -43,7 +43,7 @@ public class PointServiceTest {
 
     @Test
     @DisplayName("존재하지 않는 유저 포인트 내역 조회시 빈 리스트가 반환된다.")
-    void get_notExist_userPoint() {
+    void getUserPointHistories_whenUserDoesNotExist_returnsEmptyList() {
         // given
         long userId = 1;
 
@@ -56,7 +56,7 @@ public class PointServiceTest {
 
     @Test
     @DisplayName("포인트 테이블 에러 발생시 정상적으로 에러를 반환한다.")
-    void userPoint_charge_fail_whenPointTableReturnNull() {
+    void chargeUserPoint_whenPointTableThrowsException_throwsRuntimeException() {
         // given: Stub 객체 생성 및 상태 설정
         long id = 1, amount = 1;
         UserPointTable tempUserPointTable = mock(UserPointTable.class);
@@ -73,20 +73,17 @@ public class PointServiceTest {
 
     @Test
     @DisplayName("음수의 포인트 충전 시 에러가 발생한다.")
-    void userPoint_charge_match() {
+    void chargeUserPoint_whenAmountIsNegative_throwsRuntimeException() {
         // given
         long id = 1, amount = -1000;
 
-        // when
-        UserPoint userPoint = pointService.chargeUserPoint(id, amount);
-
-        // then
+        // when & then
         assertThrows(RuntimeException.class, () -> pointService.chargeUserPoint(id, amount));
     }
 
     @Test
     @DisplayName("계좌보다 높은 포인트 사용 시 사용이 실패한다.")
-    void userPoint_use_fail_over_usePoint() {
+    void useUserPoint_whenAmountExceedsBalance_throwsRuntimeException() {
         // given
         long id = 1, amount = 1000;
 
