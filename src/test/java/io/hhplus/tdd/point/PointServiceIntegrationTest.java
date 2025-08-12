@@ -10,6 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 
 @ExtendWith(MockitoExtension.class)
 public class PointServiceIntegrationTest {
@@ -34,9 +35,14 @@ public class PointServiceIntegrationTest {
         // then
         assertThat(pointHistories).isNotEmpty();
         assertThat(pointHistories.size()).isEqualTo(3);
-        assertThat(pointHistories.get(0).amount()).isEqualTo(1000);
-        assertThat(pointHistories.get(1).amount()).isEqualTo(3000);
-        assertThat(pointHistories.get(2).amount()).isEqualTo(500);
+        assertThat(pointHistories)
+                .extracting(PointHistory::type, PointHistory::amount)
+                .containsExactly(
+                        tuple(TransactionType.CHARGE, 1000L),
+                        tuple(TransactionType.CHARGE, 3000L),
+                        tuple(TransactionType.USE, 500L)
+                );
+
     }
 
 
