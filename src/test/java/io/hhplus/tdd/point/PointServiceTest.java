@@ -95,7 +95,7 @@ public class PointServiceTest {
         // given
         long id = 1, amount = -1000;
 
-        // when & given
+        // when & then
         assertThrows(CustomException.class, () -> pointService.useUserPoint(id, amount));
     }
 
